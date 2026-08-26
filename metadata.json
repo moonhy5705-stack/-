@@ -1,0 +1,6 @@
+{
+  "name": "취업톡",
+  "description": "취업 준비생을 위한 목표 로드맵, 자소서 관리, 맞춤 채용 공고 및 커뮤니티 올인원 플랫폼",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
