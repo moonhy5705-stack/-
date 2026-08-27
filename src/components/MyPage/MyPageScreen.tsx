@@ -69,10 +69,13 @@ export const MyPageScreen: React.FC<MyPageScreenProps> = ({
                   {userProfile.name}님
                 </h2>
                 <span className="bg-[#86f2e4] text-[#006f66] text-xs font-bold px-2 py-0.5 rounded-md">
-                  취준 회원
+                  학생 회원
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-[#434654] mt-1 font-medium">
+                {userProfile.schoolName} {userProfile.grade}학년 {userProfile.classNumber}반 {userProfile.studentNumber}번
+              </p>
+              <p className="text-xs sm:text-sm text-[#434654] mt-0.5 font-medium">
                 목표 기업: <span className="font-bold text-[#003fb1]">{userProfile.targetCompany}</span> | 직무: <span className="font-bold text-[#006a61]">{userProfile.targetRole}</span>
               </p>
               <p className="text-xs text-[#737686] mt-0.5">
@@ -156,6 +159,102 @@ export const MyPageScreen: React.FC<MyPageScreenProps> = ({
             </div>
           </form>
         )}
+      </section>
+
+      {/* Student Portal Summary */}
+      <section className="bg-white rounded-2xl border border-[#c3c5d7]/60 p-5 sm:p-6 shadow-xs">
+        <div className="flex items-center justify-between mb-4 gap-3">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#003fb1]">YES 시스템</p>
+            <h3 className="text-lg sm:text-xl font-bold text-[#121c2a] mt-1">생기부 및 학교생활 기록</h3>
+          </div>
+          <button
+            onClick={() => window.open('https://www.yeosupetro.hs.kr', '_blank', 'noopener,noreferrer')}
+            className="px-3 py-1.5 rounded-lg bg-[#dbe1ff] text-[#003fb1] text-xs font-bold hover:bg-[#ccd8ff] cursor-pointer"
+          >
+            학교 홈페이지
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-3">
+            <p className="text-[11px] text-[#737686]">학적사항</p>
+            <p className="mt-1 font-bold text-[#121c2a]">정상 재학</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-3">
+            <p className="text-[11px] text-[#737686]">출결</p>
+            <p className="mt-1 font-bold text-[#121c2a]">{userProfile.schoolRecord.attendanceRate}%</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-3">
+            <p className="text-[11px] text-[#737686]">봉사활동</p>
+            <p className="mt-1 font-bold text-[#121c2a]">{userProfile.schoolRecord.serviceHours}시간</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-3">
+            <p className="text-[11px] text-[#737686]">세부특기</p>
+            <p className="mt-1 font-bold text-[#121c2a]">디자인/홍보</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white rounded-2xl border border-[#c3c5d7]/60 p-5 sm:p-6 shadow-xs">
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#003fb1]">학생부 종합</p>
+            <h3 className="text-lg sm:text-xl font-bold text-[#121c2a] mt-1">활동 점수 및 석차</h3>
+          </div>
+          <span className="bg-[#dbe1ff] text-[#003fb1] px-2.5 py-1 rounded-full text-xs font-bold">
+            {userProfile.schoolRecord.rank}위 / {userProfile.schoolRecord.totalStudents}명
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-4">
+            <p className="text-[11px] text-[#737686]">성적 점수</p>
+            <p className="mt-1 text-2xl font-extrabold text-[#003fb1]">{userProfile.schoolRecord.academicScore}</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-4">
+            <p className="text-[11px] text-[#737686]">봉사 점수</p>
+            <p className="mt-1 text-2xl font-extrabold text-[#006a61]">{userProfile.schoolRecord.serviceScore}</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-4">
+            <p className="text-[11px] text-[#737686]">자격증 점수</p>
+            <p className="mt-1 text-2xl font-extrabold text-[#1a56db]">{userProfile.schoolRecord.certificationScore}</p>
+          </div>
+          <div className="bg-[#f9f9ff] border border-[#eff3ff] rounded-xl p-4">
+            <p className="text-[11px] text-[#737686]">상장 점수</p>
+            <p className="mt-1 text-2xl font-extrabold text-[#737686]">{userProfile.schoolRecord.awardScore}</p>
+          </div>
+        </div>
+
+        <div className="rounded-2xl bg-[#f7f9ff] border border-[#dbe1ff] p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-bold text-[#121c2a]">종합 점수</span>
+            <span className="text-xl font-extrabold text-[#003fb1]">{userProfile.schoolRecord.totalScore}점</span>
+          </div>
+          <div className="w-full h-3 bg-[#dee9fd] rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-[#003fb1] to-[#1a56db] rounded-full" style={{ width: `${Math.min((userProfile.schoolRecord.totalScore / 200) * 100, 100)}%` }} />
+          </div>
+        </div>
+
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-[#434654]">
+          <div className="bg-[#f9f9ff] rounded-xl border border-[#eff3ff] p-4">
+            <p className="font-bold text-[#121c2a] mb-2">활동 요약</p>
+            <ul className="space-y-2">
+              <li>• 자격증 보유: {userProfile.schoolRecord.certificationsCount}개</li>
+              <li>• 상장/수상: {userProfile.schoolRecord.awardsCount}건</li>
+              <li>• 봉사활동: {userProfile.schoolRecord.serviceHours}시간</li>
+              <li>• 출결률: {userProfile.schoolRecord.attendanceRate}%</li>
+            </ul>
+          </div>
+          <div className="bg-[#f9f9ff] rounded-xl border border-[#eff3ff] p-4">
+            <p className="font-bold text-[#121c2a] mb-2">학생부 비고</p>
+            <ul className="space-y-2">
+              <li>• 전반적으로 학업과 봉사, 비교과 활동의 균형이 우수함</li>
+              <li>• 디자인·홍보 활동이 적극적이며 공모전 참여 경험이 강점</li>
+              <li>• 목표 대학/채용 준비와 연계하기 좋은 기록 수준</li>
+            </ul>
+          </div>
+        </div>
       </section>
 
       {/* Activity Stats Bento Grid */}

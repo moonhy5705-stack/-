@@ -10,6 +10,8 @@ import { HomeScreen } from './components/Home/HomeScreen';
 import { RoadmapScreen } from './components/Roadmap/RoadmapScreen';
 import { CoverLetterScreen } from './components/CoverLetter/CoverLetterScreen';
 import { CommunityScreen } from './components/Community/CommunityScreen';
+import { MessagingScreen } from './components/Messaging/MessagingScreen';
+import { CalendarScreen } from './components/Calendar/CalendarScreen';
 import { MyPageScreen } from './components/MyPage/MyPageScreen';
 
 import { TaskModal } from './components/Modals/TaskModal';
@@ -19,6 +21,7 @@ import { NewCoverLetterModal } from './components/Modals/NewCoverLetterModal';
 import { JobDetailModal } from './components/Modals/JobDetailModal';
 import { CommunityWriteModal } from './components/Modals/CommunityWriteModal';
 import { PostDetailModal } from './components/Modals/PostDetailModal';
+import { MockInterviewModal } from './components/Modals/MockInterviewModal';
 
 import {
   NavigationTab,
@@ -28,7 +31,12 @@ import {
   RoadmapStep,
   CoverLetter,
   CommunityPost,
-  AppNotification
+  AppNotification,
+  Friend,
+  DirectMessageThread,
+  MockInterview,
+  InterviewAnswer,
+  CalendarEvent
 } from './types';
 
 import {
@@ -38,7 +46,11 @@ import {
   initialRoadmapSteps,
   initialCoverLetters,
   initialCommunityPosts,
-  initialNotifications
+  initialNotifications,
+  initialFriends,
+  initialDirectMessageThreads,
+  initialMockInterviews,
+  initialCalendarEvents
 } from './data/mockData';
 
 export default function App() {
@@ -81,6 +93,29 @@ export default function App() {
     return saved ? JSON.parse(saved) : initialNotifications;
   });
 
+  const [friends, setFriends] = useState<Friend[]>(() => {
+    const saved = localStorage.getItem('career_friends');
+    return saved ? JSON.parse(saved) : initialFriends;
+  });
+
+  const [directMessageThreads, setDirectMessageThreads] = useState<DirectMessageThread[]>(() => {
+    const saved = localStorage.getItem('career_direct_messages');
+    return saved ? JSON.parse(saved) : initialDirectMessageThreads;
+  });
+
+  const [mockInterviews, setMockInterviews] = useState<MockInterview[]>(() => {
+    const saved = localStorage.getItem('career_mock_interviews');
+    return saved ? JSON.parse(saved) : initialMockInterviews;
+  });
+
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(() => {
+    const saved = localStorage.getItem('career_calendar_events');
+    return saved ? JSON.parse(saved) : initialCalendarEvents;
+  });
+
+  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
+  const [selectedMockInterview, setSelectedMockInterview] = useState<MockInterview | null>(null);
+
   // Modal States
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isRoadmapEditModalOpen, setIsRoadmapEditModalOpen] = useState(false);
@@ -119,6 +154,22 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('career_notifications', JSON.stringify(notifications));
   }, [notifications]);
+
+  useEffect(() => {
+    localStorage.setItem('career_friends', JSON.stringify(friends));
+  }, [friends]);
+
+  useEffect(() => {
+    localStorage.setItem('career_direct_messages', JSON.stringify(directMessageThreads));
+  }, [directMessageThreads]);
+
+  useEffect(() => {
+    localStorage.setItem('career_mock_interviews', JSON.stringify(mockInterviews));
+  }, [mockInterviews]);
+
+  useEffect(() => {
+    localStorage.setItem('career_calendar_events', JSON.stringify(calendarEvents));
+  }, [calendarEvents]);
 
   // Task Handlers
   const handleToggleTask = (taskId: string) => {
@@ -260,6 +311,86 @@ export default function App() {
     setUserProfile((prev) => ({ ...prev, ...updated }));
   };
 
+  // Friend & Messaging Handlers
+  const handleAddFriend = (friendId: string) => {
+    setFriends((prev) =>
+      prev.map((f) =>
+        f.id === friendId ? { ...f, isFriend: true } : f
+      )
+    );
+  };
+
+  const handleSendMessage = (threadId: string, content: string) => {
+    setDirectMessageThreads((prev) =>
+      prev.map((thread) => {
+        if (thread.id === threadId) {
+          return {
+            ...thread,
+            lastMessage: content,
+            lastMessageTime: '방금 전',
+            messages: [
+              ...thread.messages,
+              {
+                id: `msg-${Date.now()}`,
+                senderId: 'me',
+                senderName: userProfile.name,
+                senderAvatar: userProfile.avatarUrl,
+                content,
+                timestamp: new Date().toLocaleTimeString('ko-KR'),
+                timeAgo: '방금 전',
+                isRead: false
+              }
+            ]
+          };
+        }
+        return thread;
+      })
+    );
+  };
+
+  const handleStartChat = (friendId: string) => {
+    const friend = friends.find((f) => f.id === friendId);
+    if (friend && !directMessageThreads.find((t) => t.participantId === friendId)) {
+      const newThread: DirectMessageThread = {
+        id: `chat-${Date.now()}`,
+        participantId: friendId,
+        participantName: friend.name,
+        participantAvatar: friend.avatarUrl,
+        participantRole: friend.role,
+        participantStatus: friend.status,
+        lastMessage: '대화를 시작했습니다',
+        lastMessageTime: '방금 전',
+        unreadCount: 0,
+        messages: []
+      };
+      setDirectMessageThreads((prev) => [newThread, ...prev]);
+      setSelectedThreadId(newThread.id);
+    }
+  };
+
+  // Mock Interview Handlers
+  const handleSaveMockInterviewAnswer = (questionId: string, answer: InterviewAnswer) => {
+    if (selectedMockInterview) {
+      setMockInterviews((prev) =>
+        prev.map((interview) => {
+          if (interview.id === selectedMockInterview.id) {
+            const existingAnswerIndex = interview.answers.findIndex(
+              (a) => a.questionId === questionId
+            );
+            let updatedAnswers = [...interview.answers];
+            if (existingAnswerIndex >= 0) {
+              updatedAnswers[existingAnswerIndex] = answer;
+            } else {
+              updatedAnswers.push(answer);
+            }
+            return { ...interview, answers: updatedAnswers };
+          }
+          return interview;
+        })
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f9f9ff] text-[#121c2a] flex flex-col selection:bg-[#dbe1ff] selection:text-[#00174d] font-sans">
       {/* Top App Bar */}
@@ -303,15 +434,71 @@ export default function App() {
             coverLetters={coverLetters}
             onSelectCoverLetter={(cl) => setSelectedCoverLetter(cl)}
             onOpenNewCoverLetterModal={() => setIsNewCoverLetterModalOpen(true)}
+            onOpenMockInterview={(cl) => {
+              const existing = mockInterviews.find((interview) => interview.coverLetterId === cl.id);
+              if (existing) {
+                setSelectedMockInterview(existing);
+                return;
+              }
+
+              const newInterview: MockInterview = {
+                id: `interview-${Date.now()}`,
+                coverLetterId: cl.id,
+                companyName: cl.company,
+                role: cl.role,
+                interviewerStyle: '편안한 면접관',
+                startedAt: new Date().toLocaleString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }),
+                status: 'pending',
+                questions: cl.questions.map((question, index) => ({
+                  id: `iq-${Date.now()}-${index}`,
+                  questionNumber: index + 1,
+                  text: question.prompt,
+                  timeLimit: 300
+                })),
+                answers: []
+              };
+
+              setMockInterviews((prev) => [newInterview, ...prev]);
+              setSelectedMockInterview(newInterview);
+            }}
           />
         )}
 
         {currentTab === 'community' && (
           <CommunityScreen
             posts={communityPosts}
+            friends={friends}
             onSelectPost={(post) => setSelectedPost(post)}
             onToggleLikePost={handleToggleLikePost}
             onOpenWriteModal={() => setIsCommunityWriteModalOpen(true)}
+            onAddFriend={handleAddFriend}
+            onStartDM={handleStartChat}
+          />
+        )}
+
+        {currentTab === 'messaging' && (
+          <MessagingScreen
+            threads={directMessageThreads}
+            friends={friends}
+            selectedThreadId={selectedThreadId}
+            onSelectThread={setSelectedThreadId}
+            onSendMessage={handleSendMessage}
+            onAddFriend={handleAddFriend}
+            onStartChat={handleStartChat}
+          />
+        )}
+
+        {currentTab === 'calendar' && (
+          <CalendarScreen
+            events={calendarEvents}
+            onEventClick={() => {}}
+            onAddEvent={() => {}}
           />
         )}
 
@@ -382,6 +569,12 @@ export default function App() {
         post={selectedPost}
         onToggleLike={(postId) => handleToggleLikePost(postId)}
         onAddComment={handleAddComment}
+      />
+
+      <MockInterviewModal
+        interview={selectedMockInterview}
+        onClose={() => setSelectedMockInterview(null)}
+        onSaveAnswer={handleSaveMockInterviewAnswer}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Rocket, Bell, CheckCircle2 } from 'lucide-react';
+import { BriefcaseBusiness, MessageSquareMore, Bell } from 'lucide-react';
 import { NavigationTab, AppNotification } from '../../types';
 
 interface TopAppBarProps {
@@ -27,8 +27,10 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
         onClick={() => onTabChange('home')}
         className="flex items-center gap-2 cursor-pointer select-none group"
       >
-        <div className="w-9 h-9 rounded-full bg-[#dbe1ff] flex items-center justify-center text-[#003fb1] group-hover:scale-105 transition-transform shadow-xs">
-          <Rocket className="w-5 h-5 text-[#003fb1]" />
+        <div className="relative w-10 h-10 rounded-2xl bg-[#dbe1ff] flex items-center justify-center text-[#003fb1] group-hover:scale-105 transition-transform shadow-xs overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#dbe1ff] to-[#bfd2ff]" />
+          <BriefcaseBusiness className="relative w-5 h-5 text-[#003fb1]" />
+          <MessageSquareMore className="absolute right-1.5 bottom-1.5 w-3 h-3 text-[#006a61] bg-white rounded-full p-0.5 border border-[#dbe1ff]" />
         </div>
         <span className="text-xl font-bold tracking-tight text-[#003fb1]">취업톡</span>
       </div>
@@ -74,6 +76,26 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
           }`}
         >
           커뮤니티
+        </button>
+        <button
+          onClick={() => onTabChange('messaging')}
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+            currentTab === 'messaging'
+              ? 'bg-[#003fb1] text-white shadow-sm'
+              : 'text-[#434654] hover:text-[#003fb1] hover:bg-[#e6eeff]'
+          }`}
+        >
+          메시지
+        </button>
+        <button
+          onClick={() => onTabChange('calendar')}
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+            currentTab === 'calendar'
+              ? 'bg-[#003fb1] text-white shadow-sm'
+              : 'text-[#434654] hover:text-[#003fb1] hover:bg-[#e6eeff]'
+          }`}
+        >
+          일정
         </button>
         <button
           onClick={() => onTabChange('mypage')}

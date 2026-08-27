@@ -7,22 +7,30 @@ import {
   User,
   Sparkles,
   Share2,
-  Bookmark
+  Bookmark,
+  UserPlus,
+  MessageCircle
 } from 'lucide-react';
-import { CommunityPost } from '../../types';
+import { CommunityPost, Friend } from '../../types';
 
 interface CommunityScreenProps {
   posts: CommunityPost[];
+  friends: Friend[];
   onSelectPost: (post: CommunityPost) => void;
   onToggleLikePost: (postId: string, e: React.MouseEvent) => void;
   onOpenWriteModal: () => void;
+  onAddFriend: (authorName: string) => void;
+  onStartDM: (authorName: string) => void;
 }
 
 export const CommunityScreen: React.FC<CommunityScreenProps> = ({
   posts,
+  friends,
   onSelectPost,
   onToggleLikePost,
-  onOpenWriteModal
+  onOpenWriteModal,
+  onAddFriend,
+  onStartDM
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
@@ -153,27 +161,57 @@ export const CommunityScreen: React.FC<CommunityScreenProps> = ({
                   </div>
                 )}
 
-                <span className="text-xs font-bold text-[#121c2a] mr-auto truncate">
-                  {post.author}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-bold text-[#121c2a] truncate block">
+                    {post.author}
+                  </span>
+                </div>
 
-                {/* Like Button */}
-                <button
-                  onClick={(e) => onToggleLikePost(post.id, e)}
-                  className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg transition-colors cursor-pointer ${
-                    post.liked
-                      ? 'text-[#003fb1] bg-[#eff3ff]'
-                      : 'text-[#737686] hover:bg-[#eff3ff] hover:text-[#003fb1]'
-                  }`}
-                >
-                  <ThumbsUp className={`w-3.5 h-3.5 ${post.liked ? 'fill-[#003fb1]' : ''}`} />
-                  <span>{post.likes}</span>
-                </button>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-1">
+                  {!post.isMentor && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAddFriend(post.author);
+                        }}
+                        className="p-1.5 text-[#737686] hover:text-[#003fb1] hover:bg-[#eff3ff] rounded-lg transition-colors cursor-pointer text-xs"
+                        title="친구 추가"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onStartDM(post.author);
+                        }}
+                        className="p-1.5 text-[#737686] hover:text-[#006a61] hover:bg-[#eff3ff] rounded-lg transition-colors cursor-pointer text-xs"
+                        title="메시지 보내기"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
 
-                {/* Comments Count */}
-                <div className="flex items-center gap-1 text-xs font-semibold text-[#737686] px-1.5 py-1">
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>{post.commentsCount}</span>
+                  {/* Like Button */}
+                  <button
+                    onClick={(e) => onToggleLikePost(post.id, e)}
+                    className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+                      post.liked
+                        ? 'text-[#003fb1] bg-[#eff3ff]'
+                        : 'text-[#737686] hover:bg-[#eff3ff] hover:text-[#003fb1]'
+                    }`}
+                  >
+                    <ThumbsUp className={`w-3.5 h-3.5 ${post.liked ? 'fill-[#003fb1]' : ''}`} />
+                    <span>{post.likes}</span>
+                  </button>
+
+                  {/* Comments Count */}
+                  <div className="flex items-center gap-1 text-xs font-semibold text-[#737686] px-1.5 py-1">
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>{post.commentsCount}</span>
+                  </div>
                 </div>
               </div>
             </article>

@@ -16,12 +16,14 @@ interface CoverLetterScreenProps {
   coverLetters: CoverLetter[];
   onSelectCoverLetter: (cl: CoverLetter) => void;
   onOpenNewCoverLetterModal: () => void;
+  onOpenMockInterview: (cl: CoverLetter) => void;
 }
 
 export const CoverLetterScreen: React.FC<CoverLetterScreenProps> = ({
   coverLetters,
   onSelectCoverLetter,
-  onOpenNewCoverLetterModal
+  onOpenNewCoverLetterModal,
+  onOpenMockInterview
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'completed' | 'in_progress' | 'not_started'>('all');
@@ -138,12 +140,11 @@ export const CoverLetterScreen: React.FC<CoverLetterScreenProps> = ({
             return (
               <article
                 key={cl.id}
-                onClick={() => onSelectCoverLetter(cl)}
-                className="bg-white border border-[#c3c5d7]/60 rounded-2xl p-5 flex flex-col gap-3.5 hover:shadow-md hover:border-[#003fb1]/40 transition-all cursor-pointer group shadow-2xs"
+                className="bg-white border border-[#c3c5d7]/60 rounded-2xl p-5 flex flex-col gap-3.5 hover:shadow-md hover:border-[#003fb1]/40 transition-all group shadow-2xs"
               >
                 <div className="flex justify-between items-start gap-4">
-                  <div className="flex flex-col">
-                    <h3 className="text-lg sm:text-xl font-bold text-[#121c2a] group-hover:text-[#003fb1] transition-colors">
+                  <div className="flex flex-col" onClick={() => onSelectCoverLetter(cl)}>
+                    <h3 className="text-lg sm:text-xl font-bold text-[#121c2a] group-hover:text-[#003fb1] transition-colors cursor-pointer">
                       {cl.company}
                     </h3>
                     <p className="text-xs sm:text-sm text-[#434654] font-medium mt-0.5">
@@ -189,15 +190,28 @@ export const CoverLetterScreen: React.FC<CoverLetterScreenProps> = ({
                 </div>
 
                 {/* Card Footer */}
-                <div className="flex justify-between items-center border-t border-[#eff3ff] pt-3 text-xs text-[#737686]">
+                <div className="flex justify-between items-center border-t border-[#eff3ff] pt-3 text-xs text-[#737686] gap-2">
                   <span>
                     {cl.lastModified
                       ? `최종 수정: ${cl.lastModified}`
                       : `마감일: ${cl.deadline || '상시'}`}
                   </span>
-                  <span className="flex items-center gap-0.5 text-[#003fb1] font-semibold group-hover:translate-x-0.5 transition-transform">
-                    문항 열람 <ChevronRight className="w-4 h-4 text-[#737686] group-hover:text-[#003fb1]" />
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onOpenMockInterview(cl)}
+                      className="px-2.5 py-1.5 rounded-lg bg-[#dbe1ff] text-[#003fb1] font-bold hover:bg-[#cddcff] transition-colors cursor-pointer"
+                    >
+                      모의면접
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onSelectCoverLetter(cl)}
+                      className="flex items-center gap-0.5 text-[#003fb1] font-semibold group-hover:translate-x-0.5 transition-transform cursor-pointer"
+                    >
+                      문항 열람 <ChevronRight className="w-4 h-4 text-[#737686] group-hover:text-[#003fb1]" />
+                    </button>
+                  </div>
                 </div>
               </article>
             );

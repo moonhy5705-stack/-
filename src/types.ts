@@ -1,7 +1,25 @@
-export type NavigationTab = 'home' | 'roadmap' | 'coverletter' | 'community' | 'mypage';
+export type NavigationTab = 'home' | 'roadmap' | 'coverletter' | 'community' | 'messaging' | 'calendar' | 'mypage';
+
+export interface SchoolRecord {
+  academicScore: number;
+  serviceScore: number;
+  certificationScore: number;
+  awardScore: number;
+  totalScore: number;
+  rank: number;
+  totalStudents: number;
+  serviceHours: number;
+  certificationsCount: number;
+  awardsCount: number;
+  attendanceRate: number;
+}
 
 export interface UserProfile {
   name: string;
+  schoolName: string;
+  grade: number;
+  classNumber: number;
+  studentNumber: number;
   targetCompany: string;
   targetRole: string;
   avatarUrl: string;
@@ -10,6 +28,7 @@ export interface UserProfile {
   progressPercent: number;
   completedTasksCount: number;
   totalTasksCount: number;
+  schoolRecord: SchoolRecord;
 }
 
 export interface TaskItem {
@@ -106,4 +125,88 @@ export interface AppNotification {
   timeAgo: string;
   read: boolean;
   type: 'job' | 'roadmap' | 'community' | 'task';
+}
+
+export interface Friend {
+  id: string;
+  name: string;
+  role: string;
+  avatarUrl: string;
+  company?: string;
+  status: 'online' | 'offline' | 'away';
+  lastOnline?: string;
+  mutualFriends?: number;
+  isFriend: boolean;
+}
+
+export interface DirectMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar: string;
+  content: string;
+  timestamp: string;
+  timeAgo: string;
+  isRead: boolean;
+}
+
+export interface DirectMessageThread {
+  id: string;
+  participantId: string;
+  participantName: string;
+  participantAvatar: string;
+  participantRole: string;
+  participantStatus: 'online' | 'offline' | 'away';
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  messages: DirectMessage[];
+}
+
+export interface InterviewQuestion {
+  id: string;
+  questionNumber: number;
+  text: string;
+  timeLimit: number; // seconds
+}
+
+export interface InterviewAnswer {
+  questionId: string;
+  content: string;
+  recordedDuration: number; // seconds
+  feedback?: string;
+  score?: number; // 0-100
+}
+
+export type InterviewerStyle =
+  | '압박면접관'
+  | '편안한 면접관'
+  | '냉정한 대기업 면접관'
+  | '현장 실무자';
+
+export interface MockInterview {
+  id: string;
+  coverLetterId: string;
+  companyName: string;
+  role: string;
+  interviewerStyle?: InterviewerStyle;
+  startedAt: string;
+  completedAt?: string;
+  status: 'in_progress' | 'completed' | 'pending';
+  questions: InterviewQuestion[];
+  answers: InterviewAnswer[];
+  overallScore?: number;
+  overallFeedback?: string;
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string; // YYYY-MM-DD
+  type: 'exam' | 'deadline' | 'interview' | 'task' | 'personal';
+  company?: string;
+  description?: string;
+  dDay?: number;
+  color?: string;
+  completed?: boolean;
 }

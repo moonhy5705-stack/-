@@ -5,11 +5,20 @@ import {
   RoadmapStep,
   CoverLetter,
   CommunityPost,
-  AppNotification
+  AppNotification,
+  Friend,
+  DirectMessage,
+  DirectMessageThread,
+  MockInterview,
+  CalendarEvent
 } from '../types';
 
 export const initialUserProfile: UserProfile = {
   name: '김취준',
+  schoolName: '여수석유화학고등학교',
+  grade: 3,
+  classNumber: 2,
+  studentNumber: 14,
   targetCompany: '삼성전자',
   targetRole: 'UX디자이너',
   avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtYn0GRotRZAQZ4vsT71tvIqbNL2Rw9xqJDA7-lMN3CG1d3PfEUTtvhjfs31CT6TpFO-rs-PGCOQtSmro6xCBjBx7D0p9zotpmc2HBFO8IKqn0wDHN4KYNEPIdAd641a5QI8NMlYvhdGBDpt2oMO4tMTRso6n0-KElzNyYQcRcJk5wxVn4p43XvKyFFmdC64O4ivLTfyQmhkN_2Xt4mRX9NFveeYBmxxmH4g2AO-3N6MyR-Becmk0DSw',
@@ -18,6 +27,19 @@ export const initialUserProfile: UserProfile = {
   progressPercent: 75,
   completedTasksCount: 12,
   totalTasksCount: 16,
+  schoolRecord: {
+    academicScore: 94.5,
+    serviceScore: 18,
+    certificationScore: 26,
+    awardScore: 14,
+    totalScore: 152.5,
+    rank: 7,
+    totalStudents: 120,
+    serviceHours: 32,
+    certificationsCount: 4,
+    awardsCount: 6,
+    attendanceRate: 98.2
+  }
 };
 
 export const initialTasks: TaskItem[] = [
@@ -464,5 +486,285 @@ export const initialNotifications: AppNotification[] = [
     timeAgo: '3시간 전',
     read: true,
     type: 'community'
+  }
+];
+
+export const initialFriends: Friend[] = [
+  {
+    id: 'friend-1',
+    name: '취업성공선배',
+    role: '삼성전자 합격자',
+    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+    company: '삼성전자',
+    status: 'online',
+    isFriend: true,
+    mutualFriends: 3
+  },
+  {
+    id: 'friend-2',
+    name: '개발자멘토',
+    role: '네이버 개발자 (5년)',
+    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+    company: '네이버',
+    status: 'online',
+    isFriend: true,
+    mutualFriends: 5
+  },
+  {
+    id: 'friend-3',
+    name: '디자인꿈나무',
+    role: '취준생 (UI/UX)',
+    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+    company: '쏘카',
+    status: 'away',
+    lastOnline: '30분 전',
+    isFriend: true,
+    mutualFriends: 2
+  }
+];
+
+export const initialDirectMessageThreads: DirectMessageThread[] = [
+  {
+    id: 'chat-1',
+    participantId: 'friend-1',
+    participantName: '취업성공선배',
+    participantAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+    participantRole: '삼성전자 합격자',
+    participantStatus: 'online',
+    lastMessage: '실제 면접에서는 포트폴리오 사례를 깊게 물어봐요',
+    lastMessageTime: '5분 전',
+    unreadCount: 0,
+    messages: [
+      {
+        id: 'msg-1',
+        senderId: 'friend-1',
+        senderName: '취업성공선배',
+        senderAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+        content: '안녕하세요! 삼성전자 합격 축하해주셔서 감사합니다 😊',
+        timestamp: '2시간 전',
+        timeAgo: '2시간 전',
+        isRead: true
+      },
+      {
+        id: 'msg-2',
+        senderId: 'friend-1',
+        senderName: '취업성공선배',
+        senderAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+        content: '직무 면접 준비는 어떻게 하고 계신가요?',
+        timestamp: '1시간 30분 전',
+        timeAgo: '1시간 30분 전',
+        isRead: true
+      },
+      {
+        id: 'msg-3',
+        senderId: 'friend-1',
+        senderName: '취업성공선배',
+        senderAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+        content: '실제 면접에서는 포트폴리오 사례를 깊게 물어봐요',
+        timestamp: '5분 전',
+        timeAgo: '5분 전',
+        isRead: true
+      }
+    ]
+  },
+  {
+    id: 'chat-2',
+    participantId: 'friend-2',
+    participantName: '개발자멘토',
+    participantAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+    participantRole: '네이버 개발자 (5년)',
+    participantStatus: 'online',
+    lastMessage: '포트폴리오에는 기술 의사결정 배경이 중요해요',
+    lastMessageTime: '어제',
+    unreadCount: 2,
+    messages: [
+      {
+        id: 'msg-4',
+        senderId: 'friend-2',
+        senderName: '개발자멘토',
+        senderAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+        content: '안녕하세요! 개발 공부하고 계시나요?',
+        timestamp: '어제',
+        timeAgo: '어제',
+        isRead: true
+      },
+      {
+        id: 'msg-5',
+        senderId: 'friend-2',
+        senderName: '개발자멘토',
+        senderAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqolLxtIQ8Dg0Wa2vvW4okKGlGlVyS6KeyhjF5gf_4olo2k8Doyj2lJPIQfhoQoW9td1lyXU6vd89wllrzpSM0Z4JMW1F6UyckQ75NIFIqkAaP348hA95jwna0IeGtdSGz2yOPeqFks9nshrA3pOxAft7L1GD9RTuo856stg_qNArcx29hvkKs-ml4D84LUP2xO9cAvBuMzOneWh_BBjY1W9fYKSCpHxqt3WCWel1_EKJi6VoQggl0Wg',
+        content: '포트폴리오에는 기술 의사결정 배경이 중요해요',
+        timestamp: '어제',
+        timeAgo: '어제',
+        isRead: false
+      }
+    ]
+  }
+];
+
+export const initialMockInterviews: MockInterview[] = [
+  {
+    id: 'interview-1',
+    coverLetterId: 'cl-1',
+    companyName: '삼성전자',
+    role: 'UX/UI 디자인',
+    startedAt: '2023.10.10 14:30',
+    completedAt: '2023.10.10 15:15',
+    status: 'completed',
+    questions: [
+      {
+        id: 'iq-1',
+        questionNumber: 1,
+        text: '당신이 진행한 프로젝트 중 가장 자랑스러운 프로젝트를 설명해주세요.',
+        timeLimit: 300
+      },
+      {
+        id: 'iq-2',
+        questionNumber: 2,
+        text: '프로젝트 진행 중 팀원과 의견이 충돌했을 때 어떻게 해결했나요?',
+        timeLimit: 300
+      },
+      {
+        id: 'iq-3',
+        questionNumber: 3,
+        text: '이 직무를 선택한 이유와 앞으로의 커리어 목표를 말씀해주세요.',
+        timeLimit: 300
+      }
+    ],
+    answers: [
+      {
+        questionId: 'iq-1',
+        content: '모바일 헬스케어 앱 프로젝트를 진행했는데, 노인 사용자의 접근성을 고려하여 글자 크기, 컬러 대비, 음성 안내를 모두 개선했습니다.',
+        recordedDuration: 145,
+        feedback: '구체적인 사용자 페르소나와 문제 정의가 좋습니다. 데이터 기반의 개선 결과가 있으면 더욱 좋을 것 같습니다.',
+        score: 85
+      },
+      {
+        questionId: 'iq-2',
+        content: '개발자와 디자이너 간 리소스 배분 문제가 있었는데, 양쪽 관점을 이해하고 데이터 기반의 우선순위를 정해 해결했습니다.',
+        recordedDuration: 156,
+        feedback: '협업 경험과 데이터 기반의 의사결정이 훌륭합니다.',
+        score: 90
+      },
+      {
+        questionId: 'iq-3',
+        content: '사용자 경험을 통해 세상을 더 나은 곳으로 만들고 싶습니다. 글로벌 UX 가이드라인 정립을 중기 목표로 하고 있습니다.',
+        recordedDuration: 134,
+        feedback: '비전이 명확하고 회사와 일치합니다.',
+        score: 88
+      }
+    ],
+    overallScore: 88,
+    overallFeedback: '우수한 수행입니다. 기술적 이해도, 협업 능력, 회사와의 문화적 부합도가 모두 높습니다. 조금 더 정량적 성과 지표를 강조하면 완벽할 것 같습니다.'
+  }
+];
+
+export const initialCalendarEvents: CalendarEvent[] = [
+  {
+    id: 'event-1',
+    title: '삼성전자 하반기 공채 마감',
+    date: '2026-09-25',
+    type: 'deadline',
+    company: '삼성전자',
+    description: '하반기 신입사원 채용 서류 접수 마감',
+    dDay: 30,
+    color: '#003fb1',
+    completed: false
+  },
+  {
+    id: 'event-2',
+    title: '정보처리기사 필기 시험',
+    date: '2026-10-15',
+    type: 'exam',
+    description: '정보처리기사 필기 시험 (CBT)',
+    dDay: 50,
+    color: '#f59e0b',
+    completed: false
+  },
+  {
+    id: 'event-3',
+    title: '현대자동차 1차 면접',
+    date: '2026-10-20',
+    type: 'interview',
+    company: '현대자동차',
+    description: 'R&D 부문 직무 면접 (오후 2시)',
+    dDay: 55,
+    color: '#006a61',
+    completed: false
+  },
+  {
+    id: 'event-4',
+    title: '오픽 시험',
+    date: '2026-10-31',
+    type: 'exam',
+    description: 'OPIc 시험 응시',
+    dDay: 66,
+    color: '#f59e0b',
+    completed: false
+  },
+  {
+    id: 'event-5',
+    title: '네이버 1차 서류 마감',
+    date: '2026-09-20',
+    type: 'deadline',
+    company: '네이버',
+    description: '서비스 기획 직무 서류 접수 마감',
+    dDay: 25,
+    color: '#FEE500',
+    completed: false
+  },
+  {
+    id: 'event-6',
+    title: '포트폴리오 최종 완성',
+    date: '2026-09-15',
+    type: 'task',
+    description: '프로젝트 3개 최종 정리 및 제출 준비',
+    dDay: 20,
+    color: '#8b5cf6',
+    completed: false
+  },
+  {
+    id: 'event-7',
+    title: '자소서 작성 완료',
+    date: '2026-09-10',
+    type: 'task',
+    company: '삼성전자',
+    description: '삼성전자 4개 문항 자소서 작성',
+    dDay: 15,
+    color: '#8b5cf6',
+    completed: false
+  },
+  {
+    id: 'event-8',
+    title: '카카오톡 면접 준비',
+    date: '2026-11-05',
+    type: 'interview',
+    company: '카카오',
+    description: '카카오 최종 면접',
+    dDay: 71,
+    color: '#006a61',
+    completed: false
+  },
+  {
+    id: 'event-9',
+    title: '쏘카 채용 설명회',
+    date: '2026-09-12',
+    type: 'personal',
+    company: '쏘카',
+    description: '온라인 채용 설명회 참석',
+    dDay: 17,
+    color: '#10b981',
+    completed: false
+  },
+  {
+    id: 'event-10',
+    title: '삼성 GSAT 시험',
+    date: '2026-10-10',
+    type: 'exam',
+    company: '삼성전자',
+    description: 'GSAT (삼성 일반 소양 검사)',
+    dDay: 45,
+    color: '#f59e0b',
+    completed: false
   }
 ];
